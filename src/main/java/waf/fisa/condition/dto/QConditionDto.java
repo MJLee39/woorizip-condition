@@ -3,6 +3,7 @@ package waf.fisa.condition.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import waf.fisa.condition.entity.Condition;
 
 import java.time.LocalDate;
 
@@ -26,4 +27,18 @@ public class QConditionDto {
 
     private String nickname;
 
+
+    @Builder
+    public Condition toEntity() {
+        return Condition.builder()
+                .registeredId(registeredId)
+                .moveInDate(moveInDate)
+                .location(location)
+                .buildingType(buildingType)
+                .fee(fee)
+                .hashtag(hashtag)
+                .accountId(accountId)
+                .nickname(nickname)
+                .build();
+    }
 }

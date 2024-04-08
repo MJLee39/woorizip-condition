@@ -70,7 +70,7 @@ public class ConditionService {
     public ArrayList<Condition> conditionalRead(QConditionDto qConditionDto) {
         log.info("[in Service]: " + qConditionDto.toString());
 
-        ArrayList<Condition> list = (ArrayList<Condition>) conditionRepositoryCustom.readByWhere(qConditionDto);
+        ArrayList<Condition> list = (ArrayList<Condition>) conditionRepositoryCustom.readByWhere(qConditionDto.toEntity());
 
         return list;
     }

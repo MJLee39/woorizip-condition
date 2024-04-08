@@ -1,16 +1,14 @@
 package waf.fisa.condition.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import waf.fisa.condition.dto.ConditionRespDto;
 import waf.fisa.condition.dto.QConditionDto;
 import waf.fisa.condition.entity.Condition;
-import waf.fisa.condition.entity.QCondition;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
-import static waf.fisa.condition.entity.QCondition.condition;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,28 +23,30 @@ public class ConditionRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Condition> readByWhere(QConditionDto dto) {
+    public List<Condition> readByWhere(Condition condition) {
         return queryFactory
-                .select(new QConditionDto(
-                        Expressions.asString(dto.getRegisteredId()),
-                        Expressions.asString(dto.getLocation()),
-                        Expressions.asString(dto.getBuildingType()),
-                        condition.fee.as(dto.getFee().toString()),
-                        condition.moveInDate.as(String.valueOf(dto.getMoveInDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))),
-                        condition.hashtag.as(dto.getHashtag().toString()),
-                        condition.accountId.as(dto.getAccountId().toString()),
-                        Expressions.asString(dto.getNickname())
-                ))
+                .select(
+                        new QConditionDto(
+                            Expressions.asString(condition.getRegisteredId()),
+                            Expressions.asString(condition.getLocation()),
+                            Expressions.asString(condition.getBuildingType()),
+                            condition.fee.as(condition.getFee()),
+                            condition.moveInDate.as(String.valueOf(condition.getMoveInDate())),
+                            condition.hashtag.as(condition.getHashtag()),
+                            Expressions.asString(condition.getAccountId()),
+                            Expressions.asString(condition.getNickname())
+                        )
+                )
                 .from(condition)
                 .where(
-                        idEq(dto.getRegisteredId()),
-                        locationEq(dto.getLocation()),
-                        buildingTypeEq(dto.getBuildingType()),
-                        feeLoe(dto.getFee()),
-                        moveInDateAfter(String.valueOf(dto.getMoveInDate())),
-                        hashtagEq(dto.getHashtag()),
-                        accountIdEq(dto.getAccountId()),
-                        nicknameEq(dto.getNickname())
+                        idEq(condition.getRegisteredId()),
+                        locationEq(condition.getLocation()),
+                        buildingTypeEq(condition.getBuildingType()),
+                        feeLoe(condition.getFee()),
+                        moveInDateAfter(String.valueOf(condition.getMoveInDate())),
+                        hashtagEq(condition.getHashtag()),
+                        accountIdEq(condition.getAccountId()),
+                        nicknameEq(condition.getNickname())
                 )
                 .fetch();
 

@@ -1,6 +1,5 @@
 package waf.fisa.condition.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import waf.fisa.condition.entity.Condition;
 

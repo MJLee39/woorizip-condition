@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package condition;
+
+option java_multiple_files = true;
+option java_package = "waf.fisa.grpc.condition";
+option java_outer_classname = "ConditionProto";
+
+import "google/protobuf/empty.proto";
+
+message Condition {
+  string id = 1;
+  string location = 2;
+  string buildingType = 3;
+  string accountId = 4;
+  string nickname = 5;
+  string fee = 6;
+  string moveInDate = 7;
+  string hashtag = 8;
+}
+
+service ConditionService {
+  rpc SaveCondition(ConditionReq) returns (ConditionResp); // Condition 등록
+
+  rpc ReadCondition(ConditionIdReq) returns (ConditionResp); // Condition 단일 조회
+  rpc ReadAllCondition(google.protobuf.Empty) returns (ConditionRespList); // Condition 전체 조회
+  rpc ReadByWhereCondition(ConditionReq) returns (ConditionRespList); // Condition 조건부 조회
+
+  rpc updateCondition(ConditionReqWithId) returns (ConditionResp); // Condition 수정
+
+  rpc DeleteCondition(ConditionIdReq) returns (ConditionDeleteResp); // Condition 삭제
+}
+
+/*
+req: save, readAll
+ */
+message ConditionReq {
+  string location = 1;
+  string buildingType = 2;
+  string accountId = 3;
+  string nickname = 4;
+  string fee = 5;
+  string moveInDate = 6;
+  string hashtag = 7;
+}
+
+/*
+req: readByWhere, update
+ */
+message ConditionReqWithId {
+  string id = 1;
+  string location = 2;
+  string buildingType = 3;
+  string accountId = 4;
+  string nickname = 5;
+  string fee = 6;
+  string moveInDate = 7;
+  string hashtag = 8;
+}
+
+/*
+req: read, delete
+ */
+message ConditionIdReq {
+  string id = 1;
+}
+
+/*
+resp: save, read, update
+ */
+message ConditionResp {
+  string id = 1;
+  string location = 2;
+  string buildingType = 3;
+  string accountId = 4;
+  string nickname = 5;
+  string fee = 6;
+  string moveInDate = 7;
+  string hashtag = 8;
+}
+
+/*
+resp: readAll, readByWhere
+ */
+message ConditionRespList {
+  repeated Condition Conditions = 1;
+}
+
+/*
+resp: delete
+ */
+message ConditionDeleteResp {
+  string msg = 1;
+}

@@ -1,21 +1,16 @@
 package waf.fisa.condition.repository;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Repository;
 import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
-import waf.fisa.condition.dto.ConditionRespDto;
 import waf.fisa.condition.dto.QConditionDto;
-import waf.fisa.condition.entity.Condition;
+import waf.fisa.grpc.condition.ConditionReq;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -27,11 +22,11 @@ public class ConditionRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<ConditionDto> readByWhere(ConditionReqDto conditionDto) {
+    public List<ConditionDto> readByWhere(ConditionReq conditionDto) {
 
         return queryFactory
                 .select(new QConditionDto(
-                        condition.registeredId,
+                        condition.id,
                         condition.location,
                         condition.buildingType,
                         condition.fee,
@@ -42,11 +37,10 @@ public class ConditionRepositoryCustom {
                 ))
                 .from(condition)
                 .where(
-                        idEq(conditionDto.getId()),
                         locationEq(conditionDto.getLocation()),
                         buildingTypeEq(conditionDto.getBuildingType()),
                         feeLoe(conditionDto.getFee()),
-                        moveInDateAfter(conditionDto.getMoveInDate()),
+                        moveInDateAfter(LocalDate.parse(conditionDto.getMoveInDate(), DateTimeFormatter.ISO_DATE)),
                         hashtagEq(conditionDto.getHashtag()),
                         accountIdEq(conditionDto.getAccountId()),
                         nicknameEq(conditionDto.getNickname())
@@ -56,7 +50,7 @@ public class ConditionRepositoryCustom {
     }
 
     private BooleanExpression idEq(String id) {
-        return hasText(id) ? condition.registeredId.eq(id) : null;
+        return hasText(id) ? condition.id.eq(id) : null;
     }
 
     private BooleanExpression locationEq(String location) {
@@ -76,15 +70,15 @@ public class ConditionRepositoryCustom {
     }
 
     private BooleanExpression hashtagEq(String hashtag) {
-        return hasText(hashtag) ? condition.registeredId.eq(hashtag) : null;
+        return hasText(hashtag) ? condition.id.eq(hashtag) : null;
     }
 
     private BooleanExpression accountIdEq(String accountId) {
-        return hasText(accountId) ? condition.registeredId.eq(accountId) : null;
+        return hasText(accountId) ? condition.id.eq(accountId) : null;
     }
 
     private BooleanExpression nicknameEq(String nickname) {
-        return hasText(nickname) ? condition.registeredId.eq(nickname) : null;
+        return hasText(nickname) ? condition.id.eq(nickname) : null;
     }
 
 }

@@ -29,6 +29,16 @@ public class ConditionReqDto {
     private String nickname;
 
     @Builder
+    public ConditionReqDto(String location, String buildingType, String fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
+        this.location = location;
+        this.buildingType = buildingType;
+        this.fee = fee;
+        this.moveInDate = moveInDate;
+        this.hashtag = hashtag;
+        this.accountId = accountId;
+        this.nickname = nickname;
+    }
+
     public Condition toEntity () {
         return Condition.builder()
                 .id(UUID.randomUUID().toString())

@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.ConditionRespDto;
-import waf.fisa.condition.dto.QConditionDto;
 import waf.fisa.condition.entity.Condition;
 import waf.fisa.condition.repository.ConditionRepository;
 import waf.fisa.condition.repository.ConditionRepositoryCustom;
-//import waf.fisa.condition.repository.ConditionRepositoryCustom;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,7 +28,6 @@ public class ConditionService {
     public ConditionService (ConditionRepository conditionRepository) {
         this.conditionRepository = conditionRepository;
     }
-
 
     /*
      * Condition save
@@ -47,7 +46,7 @@ public class ConditionService {
     public ConditionRespDto read(ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
 
-        Condition condition = conditionRepository.findById(conditionReqDto.toEntity().getRegisteredId())
+        Condition condition = conditionRepository.findById(conditionReqDto.toEntity().getId())
                 .orElseThrow(EntityExistsException::new);
 
         return new ConditionRespDto(condition);
@@ -56,10 +55,10 @@ public class ConditionService {
     /*
      * Condition readAll
      */
-    public ArrayList<Condition> readAll(ConditionReqDto conditionReqDto) {
+    public List<Condition> readAll(ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
 
-        ArrayList<Condition> list = (ArrayList<Condition>) conditionRepository.findAll();
+        List<Condition> list = conditionRepository.findAll();
 
         return list;
     }
@@ -67,12 +66,12 @@ public class ConditionService {
     /*
      * Condition conditionalRead
      */
-    public ArrayList<Condition> conditionalRead(QConditionDto qConditionDto) {
-        log.info("[in Service]: " + qConditionDto.toString());
+    public List<ConditionDto> readByWhere(ConditionReqDto conditionReqDto) {
+        log.info("[in Service]: " + conditionReqDto.toString());
 
-        ArrayList<Condition> list = (ArrayList<Condition>) conditionRepositoryCustom.readByWhere(qConditionDto.toEntity());
+        List<ConditionDto> conditionDtos = conditionRepositoryCustom.readByWhere(conditionReqDto);
 
-        return list;
+        return conditionDtos;
     }
 
     /*
@@ -81,7 +80,7 @@ public class ConditionService {
     public ConditionRespDto update(ConditionReqDto conditionReqDto) {
         log.info("[in Service][input]: " + conditionReqDto.toString());
 
-        Condition target = conditionRepository.findById(conditionReqDto.getRegisteredId())
+        Condition target = conditionRepository.findById(conditionReqDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
         log.info("[in Service][target]: " + target.toString());

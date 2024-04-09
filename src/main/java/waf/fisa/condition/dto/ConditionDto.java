@@ -1,17 +1,15 @@
 package waf.fisa.condition.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import waf.fisa.condition.entity.Condition;
 
 import java.time.LocalDate;
 
 @Getter
-@AllArgsConstructor
-public class QConditionDto {
+public class ConditionDto {
 
-    private String registeredId;
+    private String id;
 
     private String location;
 
@@ -27,11 +25,21 @@ public class QConditionDto {
 
     private String nickname;
 
+    @QueryProjection
+    public ConditionDto(String id, String location, String buildingType, String fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
+        this.id = id;
+        this.location = location;
+        this.buildingType = buildingType;
+        this.fee = fee;
+        this.moveInDate = moveInDate;
+        this.hashtag = hashtag;
+        this.accountId = accountId;
+        this.nickname = nickname;
+    }
 
-    @Builder
     public Condition toEntity() {
         return Condition.builder()
-                .registeredId(registeredId)
+                .id(id)
                 .moveInDate(moveInDate)
                 .location(location)
                 .buildingType(buildingType)

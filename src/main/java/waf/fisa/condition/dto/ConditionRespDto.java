@@ -1,5 +1,6 @@
 package waf.fisa.condition.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import waf.fisa.condition.entity.Condition;
 
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 public class ConditionRespDto {
 
-    private String registeredId;
+    private String id;
 
     private String location;
 
@@ -27,7 +28,7 @@ public class ConditionRespDto {
     private String nickname;
 
     public ConditionRespDto(Condition condition) {
-        this.registeredId = condition.getRegisteredId();
+        this.id = condition.getId();
         this.location = condition.getLocation();
         this.buildingType = condition.getBuildingType();
         this.fee = condition.getFee();
@@ -40,7 +41,7 @@ public class ConditionRespDto {
     @Override
     public String toString() {
         return String.format(
-                this.registeredId + " " +
+                this.id + " " +
                 this,location + " " +
                 this.buildingType + " " +
                 this.fee + " " +

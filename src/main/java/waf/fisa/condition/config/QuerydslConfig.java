@@ -1,4 +1,4 @@
-package waf.fisa.condition.comfig;
+package waf.fisa.condition.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

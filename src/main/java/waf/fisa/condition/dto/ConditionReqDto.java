@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 public class ConditionReqDto {
 
-    private String registeredId;
+    private String id;
 
     private String location;
 
@@ -31,7 +31,7 @@ public class ConditionReqDto {
     @Builder
     public Condition toEntity () {
         return Condition.builder()
-                .registeredId(UUID.randomUUID().toString())
+                .id(UUID.randomUUID().toString())
                 .location(location)
                 .buildingType(buildingType)
                 .fee(fee)

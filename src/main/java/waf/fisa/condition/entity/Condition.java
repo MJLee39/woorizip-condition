@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Condition {
 
     @Id
-    private String registeredId;
+    private String id;
 
     @Column(nullable = false)
     private String location;
@@ -27,27 +27,31 @@ public class Condition {
     @Column(nullable = false)
     private String buildingType;
 
-    private String fee;
+    private String accountId;
 
-    private String hashtag;
+    private String fee;
 
     private LocalDate moveInDate;
 
-    private String accountId;
+    private String hashtag;
 
     private String nickname;
 
     @Builder
-    public Condition(String registeredId, String location, String buildingType, String fee, LocalDate moveInDate,
+    public Condition(String id, String location, String buildingType, String fee, LocalDate moveInDate,
                      String hashtag, String accountId, String nickname) {
-        this.registeredId = registeredId;
+        this.id = id;
         this.location = location;
         this.buildingType = buildingType;
-        this.fee = fee;
-        this.hashtag = hashtag;
-        this.moveInDate = moveInDate;
         this.accountId = accountId;
+        this.fee = fee;
+        this.moveInDate = moveInDate;
+        this.hashtag = hashtag;
         this.nickname = nickname;
+    }
+
+    public void updateId(String id) {
+        this.id = id;
     }
 
     public void updateLocation(String location) {
@@ -68,10 +72,6 @@ public class Condition {
 
     public void updateHashtag(String hashtag) {
         this.hashtag = hashtag;
-    }
-
-    public void updateRegisteredId(String registeredId) {
-        this.registeredId = registeredId;
     }
 
     public void updateNickname(String nickname) {

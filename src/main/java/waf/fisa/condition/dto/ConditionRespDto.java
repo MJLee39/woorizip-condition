@@ -16,7 +16,7 @@ public class ConditionRespDto {
 
     private String buildingType;
 
-    private String fee;
+    private int fee;
 
     private LocalDate moveInDate;
 

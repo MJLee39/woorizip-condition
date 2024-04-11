@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import waf.fisa.condition.dto.ConditionDto;
-import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.QConditionDto;
 import waf.fisa.grpc.condition.ConditionReq;
 
@@ -61,8 +60,8 @@ public class ConditionRepositoryCustom {
         return hasText(buildingType) ? condition.buildingType.eq(buildingType) : null;
     }
 
-    private BooleanExpression feeLoe(String fee) {
-        return hasText(fee) ? condition.fee.loe(fee) : null;
+    private BooleanExpression feeLoe(int fee) {
+        return fee != 0 ? condition.fee.loe(fee) : null;
     }
 
     private BooleanExpression moveInDateAfter(LocalDate modeInDate) {

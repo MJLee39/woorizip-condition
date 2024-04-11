@@ -6,10 +6,10 @@ import waf.fisa.condition.entity.Condition;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Getter
 public class ConditionReqDto {
 
     private String id;
@@ -18,7 +18,7 @@ public class ConditionReqDto {
 
     private String buildingType;
 
-    private String fee;
+    private int fee;
 
     private LocalDate moveInDate;
 
@@ -29,7 +29,8 @@ public class ConditionReqDto {
     private String nickname;
 
     @Builder
-    public ConditionReqDto(String location, String buildingType, String fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
+    public ConditionReqDto(String location, String buildingType,
+                           int fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
         this.location = location;
         this.buildingType = buildingType;
         this.fee = fee;

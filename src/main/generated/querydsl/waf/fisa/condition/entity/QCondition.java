@@ -23,7 +23,7 @@ public class QCondition extends EntityPathBase<Condition> {
 
     public final StringPath buildingType = createString("buildingType");
 
-    public final StringPath fee = createString("fee");
+    public final NumberPath<Integer> fee = createNumber("fee", Integer.class);
 
     public final StringPath hashtag = createString("hashtag");
 

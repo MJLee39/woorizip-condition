@@ -15,7 +15,7 @@ public class ConditionDto {
 
     private String buildingType;
 
-    private String fee;
+    private int fee;
 
     private LocalDate moveInDate;
 
@@ -26,7 +26,8 @@ public class ConditionDto {
     private String nickname;
 
     @QueryProjection
-    public ConditionDto(String id, String location, String buildingType, String fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
+    public ConditionDto(String id, String location, String buildingType,
+                        int fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
         this.id = id;
         this.location = location;
         this.buildingType = buildingType;

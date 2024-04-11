@@ -3,7 +3,6 @@ package waf.fisa.condition.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import waf.fisa.grpc.condition.ConditionReq;
 
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@ToString
 @Table(name = "filter")
 public class Condition {
 
@@ -44,7 +42,7 @@ public class Condition {
     /**
      * 상세 조건: 월세 상한가
      */
-    private String fee;
+    private int fee;
 
     /**
      * 상세 조건: 입주 가능일
@@ -62,7 +60,7 @@ public class Condition {
     private String nickname;
 
     @Builder
-    public Condition(String id, String location, String buildingType, String fee, LocalDate moveInDate,
+    public Condition(String id, String location, String buildingType, int fee, LocalDate moveInDate,
                      String hashtag, String accountId, String nickname) {
         this.id = id;
         this.location = location;
@@ -99,7 +97,7 @@ public class Condition {
         this.buildingType = buildingType;
     }
 
-    public void updateFee(String fee) {
+    public void updateFee(int fee) {
         this.fee = fee;
     }
 

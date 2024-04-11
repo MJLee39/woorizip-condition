@@ -14,7 +14,7 @@ message Condition {
   string buildingType = 3;
   string accountId = 4;
   string nickname = 5;
-  string fee = 6;
+  int32 fee = 6;
   string moveInDate = 7;
   string hashtag = 8;
 }
@@ -39,7 +39,7 @@ message ConditionReq {
   string buildingType = 2;
   string accountId = 3;
   string nickname = 4;
-  string fee = 5;
+  int32 fee = 5;
   string moveInDate = 6;
   string hashtag = 7;
 }
@@ -53,7 +53,7 @@ message ConditionReqWithId {
   string buildingType = 3;
   string accountId = 4;
   string nickname = 5;
-  string fee = 6;
+  int32 fee = 6;
   string moveInDate = 7;
   string hashtag = 8;
 }
@@ -74,7 +74,7 @@ message ConditionResp {
   string buildingType = 3;
   string accountId = 4;
   string nickname = 5;
-  string fee = 6;
+  int32 fee = 6;
   string moveInDate = 7;
   string hashtag = 8;
 }

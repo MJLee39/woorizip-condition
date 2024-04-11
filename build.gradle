@@ -50,7 +50,7 @@ dependencies {
 }
 
 // Querydsl 설정부
-def querydslDir = "./src/main/generated/querydsl"
+def querydslDir = "src/main/generated/querydsl"
 
 // querydsl QClass 파일 생성 위치를 지정
 tasks.withType(JavaCompile) {

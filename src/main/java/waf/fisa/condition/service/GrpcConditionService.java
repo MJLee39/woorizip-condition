@@ -41,7 +41,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
                 .setFee(condition.getFee())
                 .setMoveInDate(condition.getMoveInDate().toString())
                 .setHashtag(condition.getHashtag())
-                .setNickname(condition.getNickname())
                 .build()
         );
 
@@ -60,7 +59,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
                 .setFee(condition.getFee())
                 .setMoveInDate(condition.getMoveInDate().toString())
                 .setHashtag(condition.getHashtag())
-                .setNickname(condition.getNickname())
                 .build()
         );
 
@@ -88,35 +86,12 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
                 .setFee(condition.getFee())
                 .setMoveInDate(condition.getMoveInDate().toString())
                 .setHashtag(condition.getHashtag())
-                .setNickname(condition.getNickname())
                 .build()
         ).toList();
     }
 
 
-    @Override
-    public void readByWhereCondition(ConditionReq request, StreamObserver<ConditionRespList> responseObserver) {
-
-        LocalDate time  = request.getMoveInDate().isBlank() ? LocalDate.parse(request.getMoveInDate(), DateTimeFormatter.ISO_DATE): null;
-
-        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
-                .location(request.getLocation())
-                .buildingType(request.getBuildingType())
-                .accountId(request.getAccountId())
-                .fee(request.getFee())
-                .moveInDate(time)
-                .hashtag(request.getHashtag())
-                .nickname(request.getNickname())
-                .build();
-
-        List<ConditionDto> list = conditionRepositoryCustom.readByWhere(request);
-
-        responseObserver.onNext(ConditionRespList.newBuilder()
-                .addAllConditions(convertToEntityforReadByWhere(list))
-                .build()
-        );
-        responseObserver.onCompleted();
-    }
+    
 
     private static List<waf.fisa.grpc.condition.Condition> convertToEntityforReadByWhere(List<ConditionDto> list) {
         return list.stream().map(conditionDto -> waf.fisa.grpc.condition.Condition.newBuilder()
@@ -127,7 +102,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
                         .setFee(conditionDto.getFee())
                         .setMoveInDate(conditionDto.getMoveInDate().toString())
                         .setHashtag(conditionDto.getHashtag())
-                        .setNickname(conditionDto.getNickname())
                         .build()
         ).toList();
     }

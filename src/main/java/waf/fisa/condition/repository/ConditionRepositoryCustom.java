@@ -31,8 +31,7 @@ public class ConditionRepositoryCustom {
                         condition.fee,
                         condition.moveInDate,
                         condition.hashtag,
-                        condition.accountId,
-                        condition.nickname
+                        condition.accountId
                 ))
                 .from(condition)
                 .where(
@@ -42,7 +41,6 @@ public class ConditionRepositoryCustom {
                         moveInDateAfter(LocalDate.parse(conditionDto.getMoveInDate(), DateTimeFormatter.ISO_DATE)),
                         hashtagEq(conditionDto.getHashtag()),
                         accountIdEq(conditionDto.getAccountId()),
-                        nicknameEq(conditionDto.getNickname())
                 )
                 .fetch();
 
@@ -74,10 +72,6 @@ public class ConditionRepositoryCustom {
 
     private BooleanExpression accountIdEq(String accountId) {
         return hasText(accountId) ? condition.id.eq(accountId) : null;
-    }
-
-    private BooleanExpression nicknameEq(String nickname) {
-        return hasText(nickname) ? condition.id.eq(nickname) : null;
     }
 
 }

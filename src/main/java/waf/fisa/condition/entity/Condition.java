@@ -23,6 +23,11 @@ public class Condition {
     private String id;
 
     /**
+     * Condition을 등록한 의뢰인
+     */
+    private String accountId;
+
+    /**
      * 기본 조건: 소재지
      */
     @Column(nullable = false)
@@ -33,11 +38,6 @@ public class Condition {
      */
     @Column(nullable = false)
     private String buildingType;
-
-    /**
-     * Condition을 등록한 의뢰인
-     */
-    private String accountId;
 
     /**
      * 상세 조건: 월세 상한가
@@ -54,39 +54,28 @@ public class Condition {
      */
     private String hashtag;
 
-    /**
-     * 상세 조건: 의뢰인이 등록한 조건들의 별칭
-     */
-    private String nickname;
-
     @Builder
-    public Condition(String id, String location, String buildingType, int fee, LocalDate moveInDate,
-                     String hashtag, String accountId, String nickname) {
+    public Condition(String id, String accountId, String location, String buildingType, int fee, LocalDate moveInDate,
+                     String hashtag) {
         this.id = id;
+        this.accountId = accountId;
         this.location = location;
         this.buildingType = buildingType;
-        this.accountId = accountId;
         this.fee = fee;
         this.moveInDate = moveInDate;
         this.hashtag = hashtag;
-        this.nickname = nickname;
     }
 
     public static Condition toEntity (ConditionReq input) {
         return Condition.builder()
                 .id(UUID.randomUUID().toString())
+                .accountId(input.getAccountId())
                 .location(input.getLocation())
                 .buildingType(input.getBuildingType())
-                .accountId(input.getAccountId())
                 .fee(input.getFee())
                 .moveInDate(LocalDate.parse(input.getMoveInDate(), DateTimeFormatter.ISO_DATE))
                 .hashtag(input.getHashtag())
-                .nickname(input.getNickname())
                 .build();
-    }
-
-    public void updateId(String id) {
-        this.id = id;
     }
 
     public void updateLocation(String location) {
@@ -109,7 +98,4 @@ public class Condition {
         this.hashtag = hashtag;
     }
 
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-    }
 }

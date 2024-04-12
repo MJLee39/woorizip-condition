@@ -11,6 +11,8 @@ public class ConditionDto {
 
     private String id;
 
+    private String accountId;
+
     private String location;
 
     private String buildingType;
@@ -21,33 +23,28 @@ public class ConditionDto {
 
     private String hashtag;
 
-    private String accountId;
-
-    private String nickname;
 
     @QueryProjection
-    public ConditionDto(String id, String location, String buildingType,
-                        int fee, LocalDate moveInDate, String hashtag, String accountId, String nickname) {
+    public ConditionDto(String id, String accountId, String location, String buildingType,
+                        int fee, LocalDate moveInDate, String hashtag) {
         this.id = id;
+        this.accountId = accountId;
         this.location = location;
         this.buildingType = buildingType;
         this.fee = fee;
         this.moveInDate = moveInDate;
         this.hashtag = hashtag;
-        this.accountId = accountId;
-        this.nickname = nickname;
     }
 
     public Condition toEntity() {
         return Condition.builder()
                 .id(id)
-                .moveInDate(moveInDate)
+                .accountId(accountId)
                 .location(location)
                 .buildingType(buildingType)
                 .fee(fee)
+                .moveInDate(moveInDate)
                 .hashtag(hashtag)
-                .accountId(accountId)
-                .nickname(nickname)
                 .build();
     }
 }

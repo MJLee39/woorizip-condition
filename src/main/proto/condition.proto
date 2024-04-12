@@ -10,13 +10,12 @@ import "google/protobuf/empty.proto";
 
 message Condition {
   string id = 1;
-  string location = 2;
-  string buildingType = 3;
-  string accountId = 4;
-  string nickname = 5;
-  int32 fee = 6;
-  string moveInDate = 7;
-  string hashtag = 8;
+  string accountId = 2;
+  string location = 3;
+  string buildingType = 4;
+  int32 fee = 5;
+  string moveInDate = 6;
+  string hashtag = 7;
 }
 
 service ConditionService {
@@ -32,30 +31,28 @@ service ConditionService {
 }
 
 /*
-req: save, readAll
+req: save, readByWhere
  */
 message ConditionReq {
-  string location = 1;
-  string buildingType = 2;
-  string accountId = 3;
-  string nickname = 4;
-  int32 fee = 5;
-  string moveInDate = 6;
-  string hashtag = 7;
+  string accountId = 1;
+  string location = 2;
+  string buildingType = 3;
+  int32 fee = 4;
+  string moveInDate = 5;
+  string hashtag = 6;
 }
 
 /*
-req: readByWhere, update
+req: update
  */
 message ConditionReqWithId {
   string id = 1;
-  string location = 2;
-  string buildingType = 3;
-  string accountId = 4;
-  string nickname = 5;
-  int32 fee = 6;
-  string moveInDate = 7;
-  string hashtag = 8;
+  string accountId = 2;
+  string location = 3;
+  string buildingType = 4;
+  int32 fee = 5;
+  string moveInDate = 6;
+  string hashtag = 7;
 }
 
 /*
@@ -70,13 +67,12 @@ resp: save, read, update
  */
 message ConditionResp {
   string id = 1;
-  string location = 2;
-  string buildingType = 3;
-  string accountId = 4;
-  string nickname = 5;
-  int32 fee = 6;
-  string moveInDate = 7;
-  string hashtag = 8;
+  string accountId = 2;
+  string location = 3;
+  string buildingType = 4;
+  int32 fee = 5;
+  string moveInDate = 6;
+  string hashtag = 7;
 }
 
 /*

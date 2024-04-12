@@ -33,8 +33,6 @@ public class QCondition extends EntityPathBase<Condition> {
 
     public final DatePath<java.time.LocalDate> moveInDate = createDate("moveInDate", java.time.LocalDate.class);
 
-    public final StringPath nickname = createString("nickname");
-
     public QCondition(String variable) {
         super(Condition.class, forVariable(variable));
     }

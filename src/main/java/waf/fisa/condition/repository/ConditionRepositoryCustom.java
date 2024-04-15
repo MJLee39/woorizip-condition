@@ -1,20 +1,15 @@
 package waf.fisa.condition.repository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import waf.fisa.condition.dto.ConditionDto;
-import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.QConditionDto;
 import waf.fisa.condition.entity.Condition;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 import static org.springframework.util.StringUtils.hasText;
 import static waf.fisa.condition.entity.QCondition.condition;
@@ -25,6 +20,30 @@ import static waf.fisa.condition.entity.QCondition.condition;
 public class ConditionRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    public List<ConditionDto> readMyConditions(Condition input) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        log.info("** in ConditionRepositoryCustom, input: accountId: {}", input.getAccountId());
+
+        builder.and(condition.accountId.eq(input.getAccountId()));
+
+        log.info("** in ConditionRepositoryCustom, builder: {}", builder.toString());
+
+        return queryFactory
+                .select(new QConditionDto(
+                        condition.id,
+                        condition.accountId,
+                        condition.location,
+                        condition.buildingType,
+                        condition.fee,
+                        condition.moveInDate,
+                        condition.hashtag
+                ))
+                .from(condition)
+                .where(builder)
+                .fetch();
+    }
 
     public List<ConditionDto> readByBuilder(Condition input) {
         BooleanBuilder builder = new BooleanBuilder();

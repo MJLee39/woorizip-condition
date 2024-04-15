@@ -1,18 +1,13 @@
 package waf.fisa.condition.service;
 
-import com.google.protobuf.Empty;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.grpc.stub.StreamObserver;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.springframework.beans.factory.annotation.Autowired;
 import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.entity.Condition;
-import waf.fisa.condition.entity.QCondition;
 import waf.fisa.condition.repository.ConditionRepository;
 import waf.fisa.condition.repository.ConditionRepositoryCustom;
 import waf.fisa.grpc.condition.*;
@@ -20,8 +15,6 @@ import waf.fisa.grpc.condition.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @GrpcService
@@ -30,7 +23,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     private final ConditionRepository conditionRepository;
     private final ConditionRepositoryCustom conditionRepositoryCustom;
-    private final JPAQueryFactory jpaQueryFactory;
 
     /*
     조건 등록
@@ -83,16 +75,33 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     /*
     전체 조건 조회
      */
-    @Override
-    public void readAllCondition(Empty request, StreamObserver<ConditionRespList> responseObserver) {
-        log.info("** in log, READ ALL request.tpString: no input");
 
-        List<Condition> list = conditionRepository.findAll(); // entity
+    @Override
+    public void readAllCondition(ConditionAccountIdReq request, StreamObserver<ConditionRespList> responseObserver) {
+        log.info("** in log, READ ALL request.getAccount: {}", request.getAccountId());
+        log.info("** in log, READ ALL request.toString: {}", request.toString());
+
+        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
+                .accountId(request.getAccountId())
+                .build();
+
+        Condition condition = conditionReqDto.toEntity();
+
+        List<ConditionDto> list = conditionRepositoryCustom.readMyConditions(condition);
+
         log.info("** {}, {}, {}, {}, {}, {}, {}", list.get(0).getId(), list.get(0).getAccountId(), list.get(0).getLocation(),
-                 list.get(0).getBuildingType(), list.get(0).getFee(), list.get(0).getMoveInDate(), list.get(0).getHashtag());
+                list.get(0).getBuildingType(), list.get(0).getFee(), list.get(0).getMoveInDate(), list.get(0).getHashtag());
+
+        if (list.size() != 0) {
+            for (ConditionDto ele : list) {
+                log.info(ele.toString());
+            }
+        } else {
+            log.info("** list is empty.");
+        }
 
         responseObserver.onNext(ConditionRespList.newBuilder()
-                .addAllConditions(convertToEntity(list))
+                .addAllConditions(convertToEntityForReadByWhere(list))
                 .build()
         );
 

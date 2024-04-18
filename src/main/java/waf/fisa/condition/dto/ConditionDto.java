@@ -36,6 +36,13 @@ public class ConditionDto {
         this.hashtag = hashtag;
     }
 
+    public ConditionRespDto toConditionRespDto(String id, String accountId, String location, String buildingType,
+                              int fee, LocalDate moveInDate, String hashtag) {
+
+        return new ConditionRespDto(id, accountId, location, buildingType,
+        fee, moveInDate, hashtag);
+    }
+
     public Condition toEntity() {
         return Condition.builder()
                 .id(id)

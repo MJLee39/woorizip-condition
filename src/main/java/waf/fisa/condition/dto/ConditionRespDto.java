@@ -34,6 +34,19 @@ public class ConditionRespDto {
         this.hashtag = condition.getHashtag();
     }
 
+//    public ConditionRespDto toConditionRespDto(ConditionDto conditionDto) {
+//        this.id = conditionDto.getId();
+//        this.accountId = conditionDto.getAccountId();;
+//        this.location = conditionDto.getLocation();
+//        this.buildingType = conditionDto.getBuildingType();
+//        this.fee = conditionDto.getFee();
+//        this.moveInDate = conditionDto.getMoveInDate();
+//        this.hashtag = conditionDto.getHashtag();
+//
+//        return new ConditionRespDto(conditionDto.getId(), conditionDto.getAccountId(), conditionDto.getLocation()
+//        , conditionDto.getBuildingType(), conditionDto.getFee(), conditionDto.getMoveInDate(), conditionDto.getHashtag());
+//    }
+
     @Override
     public String toString() {
         return String.format(

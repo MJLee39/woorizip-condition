@@ -47,6 +47,9 @@ dependencies {
 	implementation "io.grpc:grpc-stub:${grpcVersion}"
 	implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
 	compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 // Querydsl 설정부

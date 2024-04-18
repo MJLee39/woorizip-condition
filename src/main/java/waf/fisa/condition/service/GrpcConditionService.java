@@ -108,20 +108,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         responseObserver.onCompleted();
     }
 
-    private static List<waf.fisa.grpc.condition.Condition> convertToEntity(List<Condition> list) {
-        return list.stream().map(condition -> waf.fisa.grpc.condition.Condition
-                .newBuilder()
-                .setId(condition.getId())
-                .setAccountId(condition.getAccountId())
-                .setLocation(condition.getLocation())
-                .setBuildingType(condition.getBuildingType())
-                .setFee(condition.getFee())
-                .setMoveInDate(condition.getMoveInDate().toString())
-                .setHashtag(condition.getHashtag())
-                .build()
-        ).toList();
-    }
-
     /*
     조건부 조건 조회
      */

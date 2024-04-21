@@ -3,13 +3,10 @@ package waf.fisa.condition.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.ConditionRespDto;
-import waf.fisa.condition.entity.Condition;
 import waf.fisa.condition.service.ConditionService;
-import waf.fisa.grpc.condition.ConditionReq;
 
 import java.util.List;
 

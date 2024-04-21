@@ -75,7 +75,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     /*
     전체 조건 조회
      */
-
     @Override
     public void readAllCondition(ConditionAccountIdReq request, StreamObserver<ConditionRespList> responseObserver) {
         log.info("** in log, READ ALL request.getAccount: {}", request.getAccountId());
@@ -161,7 +160,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
                 .build()
         ).toList();
     }
-
 
     /*
     조건 수정

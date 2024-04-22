@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.transaction.annotation.Transactional;
 import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.entity.Condition;
@@ -26,6 +27,8 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     조건 등록
+    Request: ConditionReq
+    Response: ConditionResp
      */
     @Override
     public void saveCondition(ConditionReq request, StreamObserver<ConditionResp> responseObserver) {
@@ -51,6 +54,8 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     단일 조건 조회
+    Request: ConditionIdReq
+    Response: ConditionResp
      */
     @Override
     public void readCondition(ConditionIdReq request, StreamObserver<ConditionResp> responseObserver) {
@@ -74,11 +79,12 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     전체 조건 조회
+    Request: ConditionAccountIdReq
+    Response: ConditionRespList
      */
     @Override
     public void readAllCondition(ConditionAccountIdReq request, StreamObserver<ConditionRespList> responseObserver) {
         log.info("** in log, READ ALL request.getAccount: {}", request.getAccountId());
-        log.info("** in log, READ ALL request.toString: {}", request.toString());
 
         ConditionReqDto conditionReqDto = ConditionReqDto.builder()
                 .accountId(request.getAccountId())
@@ -109,6 +115,8 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     조건부 조건 조회
+    Request: ConditionReq
+    Response: ConditionRespList
      */
     @Override
     public void readByWhereCondition(ConditionReq request, StreamObserver<ConditionRespList> responseObserver) {
@@ -163,8 +171,11 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     조건 수정
+    Request: ConditionReqWithId
+    Response: ConditionResp
      */
     @Override
+    @Transactional
     public void updateCondition(ConditionReqWithId request, StreamObserver<ConditionResp> responseObserver) {
         log.info("** in log, UPDATE request.toString: {}", request.toString());
 
@@ -207,6 +218,8 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     조건 삭제
+    Request: ConditionIdReq
+    Response: ConditionDeleteResp
      */
     @Override
     public void deleteCondition(ConditionIdReq request, StreamObserver<ConditionDeleteResp> responseObserver) {

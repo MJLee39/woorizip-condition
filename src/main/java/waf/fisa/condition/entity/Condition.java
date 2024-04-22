@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Condition {
 
     /**
-     * 무작위로 생성되는 UUID, Condition의 구분값
+     * 무작위로 생성되는 UUID. Condition의 구분값
      */
     @Id
     private String id;
@@ -50,7 +50,7 @@ public class Condition {
     private LocalDate moveInDate;
 
     /**
-     * 상세 조건: 원하는 부가 옵션
+     * 상세 조건: 원하는 부가 옵션(해시태그)
      */
     private String hashtag;
 

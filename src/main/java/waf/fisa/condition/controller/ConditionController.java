@@ -2,6 +2,7 @@ package waf.fisa.condition.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import waf.fisa.condition.dto.ConditionReqDto;
@@ -24,18 +25,24 @@ public class ConditionController {
     /*
     save
      */
+    @CrossOrigin("*")
     @PostMapping("/condition/save")
     public ResponseEntity<ConditionRespDto> save(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + ConditionReqDto.builder().toString());
 
         ConditionRespDto conditionRespDto = conditionService.save(conditionReqDto);
 
-        return ResponseEntity.ok(conditionRespDto);
+        if (conditionRespDto != null) {
+            return ResponseEntity.ok(conditionRespDto);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     /*
     read
      */
+    @CrossOrigin("*")
     @GetMapping("/condition/read/{id}")
     public ResponseEntity<ConditionRespDto> read(@PathVariable String id) {
         log.info("[in controller]: " + id);
@@ -48,6 +55,7 @@ public class ConditionController {
     /*
     readAll
      */
+    @CrossOrigin("*")
     @GetMapping("/condition/readAll/{accountId}")
     public ResponseEntity<List<ConditionRespDto>> readAll(@PathVariable String accountId) {
         log.info("[in controller]: " + accountId);
@@ -60,6 +68,7 @@ public class ConditionController {
     /*
     readByWhere
      */
+    @CrossOrigin("*")
     @PostMapping("/condition/readByWhere")
     public ResponseEntity<List<ConditionRespDto>> readByWhere(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + conditionReqDto.toString());
@@ -72,6 +81,7 @@ public class ConditionController {
     /*
     update
      */
+    @CrossOrigin("*")
     @PostMapping("/condition/update")
     public ResponseEntity<ConditionRespDto> update(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + conditionReqDto.toString());
@@ -84,6 +94,7 @@ public class ConditionController {
     /*
     delete
      */
+    @CrossOrigin("*")
     @DeleteMapping("/condition/delete/{id}")
     public String delete(@PathVariable String id) {
 //        log.info("[in controller]: " + id);

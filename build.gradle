@@ -50,6 +50,8 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
 }
 
 // Querydsl 설정부

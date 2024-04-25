@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.ConditionRespDto;
@@ -35,9 +36,14 @@ public class ConditionService {
     public ConditionRespDto save (ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
 
-        Condition condition = conditionRepository.save(conditionReqDto.toEntity());
+        List<ConditionRespDto> list = readAll(conditionReqDto.getAccountId());
 
-        return new ConditionRespDto(condition);
+        if (!list.isEmpty()) {
+            return null;
+        } else {
+            Condition condition = conditionRepository.save(conditionReqDto.toEntity());
+            return new ConditionRespDto(condition);
+        }
     }
 
     /*
@@ -97,6 +103,7 @@ public class ConditionService {
     /*
      * Condition update
      */
+    @Transactional
     public ConditionRespDto update(ConditionReqDto conditionReqDto) {
         log.info("[in Service][input]: " + conditionReqDto.toString());
 
@@ -134,14 +141,14 @@ public class ConditionService {
      * Condition delete
      */
     public String delete(String id) {
-//        log.info("[in Service]: " + id);
+        log.info("[in Service]: " + id);
 
         if (conditionRepository.existsById(id)) {
             conditionRepository.deleteById(id);
-//            log.info("** in if: target was deleted.");
+            log.info("** in if: target was deleted.");
             return "deleted";
         } else {
-//            log.info("** in if: target didnt existed.");
+            log.info("** in if: target didnt existed.");
             return "fail";
         }
     }

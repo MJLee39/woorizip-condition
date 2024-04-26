@@ -42,11 +42,13 @@ public class Condition {
     /**
      * 상세 조건: 월세 상한가
      */
+    @Column(nullable = false)
     private int fee;
 
     /**
      * 상세 조건: 입주 가능일
      */
+    @Column(nullable = false)
     private LocalDate moveInDate;
 
     /**

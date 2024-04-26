@@ -31,19 +31,27 @@ public class ConditionService {
     }
 
     /*
+     * Condition isRegistered
+     * !list.isEmpty(): false -> 등록된 조건 없음 -> 등록 가능
+     * !list.isEmpty(): true  -> 등록된 조건 있음 -> 등록 불가
+     */
+    public Boolean isRegistered (String accountId) {
+        log.info("[in service]: " + accountId);
+
+        List<ConditionRespDto> list = readAll(accountId);
+
+        return !list.isEmpty();
+    }
+
+    /*
      * Condition save
      */
     public ConditionRespDto save (ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
 
-        List<ConditionRespDto> list = readAll(conditionReqDto.getAccountId());
+        Condition condition = conditionRepository.save(conditionReqDto.toEntity());
 
-        if (!list.isEmpty()) {
-            return null;
-        } else {
-            Condition condition = conditionRepository.save(conditionReqDto.toEntity());
-            return new ConditionRespDto(condition);
-        }
+        return new ConditionRespDto(condition);
     }
 
     /*

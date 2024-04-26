@@ -19,6 +19,8 @@ message Condition {
 }
 
 service ConditionService {
+  rpc IsRegistered(ConditionAccountIdReq) returns(ConditionIsRegisteredResp);
+
   rpc SaveCondition(ConditionReq) returns (ConditionResp); // Condition 등록
 
   rpc ReadCondition(ConditionIdReq) returns (ConditionResp); // Condition 단일 조회
@@ -31,7 +33,7 @@ service ConditionService {
 }
 
 /*
-req: save, readByWhere
+ * req: save, readByWhere
  */
 message ConditionReq {
   string accountId = 1;
@@ -43,7 +45,7 @@ message ConditionReq {
 }
 
 /*
-req: update
+ * req: update
  */
 message ConditionReqWithId {
   string id = 1;
@@ -56,21 +58,28 @@ message ConditionReqWithId {
 }
 
 /*
-req: read, delete
+ * req: read, delete
  */
 message ConditionIdReq {
   string id = 1;
 }
 
 /*
-req: readAll
+ * req: IsRegistered, readAll
  */
 message ConditionAccountIdReq {
   string accountId = 1;
 }
 
 /*
-resp: save, read, update
+ * resp: IsRegistered
+ */
+message ConditionIsRegisteredResp {
+  bool isRegistered = 1;
+}
+
+/*
+ * resp: save, read, update
  */
 message ConditionResp {
   string id = 1;
@@ -83,14 +92,14 @@ message ConditionResp {
 }
 
 /*
-resp: readAll, readByWhere
+ * resp: readAll, readByWhere
  */
 message ConditionRespList {
   repeated Condition Conditions = 1;
 }
 
 /*
-resp: delete
+ * resp: delete
  */
 message ConditionDeleteResp {
   string msg = 1;

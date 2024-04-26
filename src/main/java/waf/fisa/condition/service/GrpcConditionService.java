@@ -26,10 +26,38 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     private final ConditionRepositoryCustom conditionRepositoryCustom;
 
     /*
-    조건 등록
-    Request: ConditionReq
-    Response: ConditionResp
+    조건 등록 확인
+    Request: ConditionAccountIdReq
+    Response: ConditionIsRegistered
      */
+    @Override
+    public void isRegistered(ConditionAccountIdReq request, StreamObserver<ConditionIsRegisteredResp> responseObserver) {
+        log.info("** in log: isRegistered request: {}", request.toString());
+
+        boolean isRegistered;
+
+        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
+                .accountId(request.getAccountId())
+                .build();
+
+        Condition condition = conditionReqDto.toEntity();
+
+        List<ConditionDto> list = conditionRepositoryCustom.readMyConditions(condition);
+
+        isRegistered = !list.isEmpty();
+
+        responseObserver.onNext(ConditionIsRegisteredResp.newBuilder()
+                .setIsRegistered(isRegistered)
+                .build());
+
+        responseObserver.onCompleted();
+    }
+
+    /*
+        조건 등록
+        Request: ConditionReq
+        Response: ConditionResp
+         */
     @Override
     public void saveCondition(ConditionReq request, StreamObserver<ConditionResp> responseObserver) {
         log.info("** in log, SAVE request.toString: {}", request.toString());

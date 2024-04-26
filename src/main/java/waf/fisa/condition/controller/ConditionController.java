@@ -23,6 +23,24 @@ public class ConditionController {
     }
 
     /*
+    is registered
+     */
+    @GetMapping("/condition/isregistered/{accountId}")
+    public ResponseEntity<Boolean> isRegistered(@PathVariable String accountId) {
+        log.info("[in controller]: " + accountId);
+
+        Boolean isRegistered = conditionService.isRegistered(accountId);
+
+        if (isRegistered) {
+            // isRegistered: true  -> 등록된 조건 있음 -> 등록 불가
+            return ResponseEntity.ok(true);
+        } else {
+            // isRegistered: false -> 등록된 조건 없음 -> 등록 가능
+            return ResponseEntity.ok(false);
+        }
+    }
+
+    /*
     save
      */
     @CrossOrigin("*")
@@ -32,11 +50,7 @@ public class ConditionController {
 
         ConditionRespDto conditionRespDto = conditionService.save(conditionReqDto);
 
-        if (conditionRespDto != null) {
-            return ResponseEntity.ok(conditionRespDto);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        return ResponseEntity.ok(conditionRespDto);
     }
 
     /*

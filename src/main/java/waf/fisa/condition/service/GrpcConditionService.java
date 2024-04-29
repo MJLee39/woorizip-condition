@@ -17,7 +17,6 @@ import waf.fisa.grpc.condition.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,10 +27,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     private final ConditionRepository conditionRepository;
     private final ConditionRepositoryCustom conditionRepositoryCustom;
 
-    /*
-    조건 등록 확인
-    Request: ConditionAccountIdReq
-    Response: ConditionIsRegistered
+    /**
+     * isRegistered: 조건 등록 확인
+     * @param request: accountId
+     * @param responseObserver: boolean
      */
     @Override
     public void isRegistered(ConditionAccountIdReq request, StreamObserver<ConditionIsRegisteredResp> responseObserver) {
@@ -52,10 +51,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         responseObserver.onCompleted();
     }
 
-    /*
-    조건 등록
-    Request: ConditionReq
-    Response: ConditionResp
+    /**
+     * saveCondition: 조건 등록
+     * @param request: accountId, location, buildingType, fee, moveInDate, hashtag
+     * @param responseObserver: id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
     public void saveCondition(ConditionReq request, StreamObserver<ConditionResp> responseObserver) {
@@ -79,10 +78,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         responseObserver.onCompleted();
     }
 
-    /*
-    내 조건 조회
-    Request: ConditionAccountIdReq
-    Response: ConditionResp
+    /**
+     * readMyCondition: 의뢰인 조건 조회
+     * @param request: accountId
+     * @param responseObserver: id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
     public void readMyCondition(ConditionAccountIdReq request, StreamObserver<ConditionResp> responseObserver) {
@@ -104,10 +103,11 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         responseObserver.onCompleted();
     }
 
-    /*
-    전체 조건 조회
-    Request: Empty
-    Response: ConditionRespList
+    /**
+     * readAllCondition: 전체 조건 조회
+     * 공인중개사가 사용하는 데이터
+     * @param request: empty
+     * @param responseObserver: list - id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
     public void readAllCondition(Empty request, StreamObserver<ConditionRespList> responseObserver) {
@@ -147,10 +147,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         ).toList();
     }
 
-    /*
-    조건부 조건 조회
-    Request: ConditionReq
-    Response: ConditionRespList
+    /**
+     * readByWhere: 조건부 조건 조회
+     * @param request: id, accountId, location, buildingType, fee, moveInDate, hashtag
+     * @param responseObserver: list - id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
     public void readByWhereCondition(ConditionReq request, StreamObserver<ConditionRespList> responseObserver) {
@@ -203,10 +203,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         ).toList();
     }
 
-    /*
-    조건 수정
-    Request: ConditionReqWithId
-    Response: ConditionResp
+    /**
+     * updateCondition: 조건 수정
+     * @param request: id, accountId, location, buildingType, fee, moveInDate, hashtag
+     * @param responseObserver: id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
     @Transactional
@@ -250,12 +250,13 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         responseObserver.onCompleted();
     }
 
-    /*
-    조건 삭제
-    Request: ConditionIdReq
-    Response: ConditionDeleteResp
+    /**
+     * delete: id로 특정 조건 삭제
+     * @param request: id
+     * @param responseObserver: msg
      */
     @Override
+    @Transactional
     public void deleteCondition(ConditionIdReq request, StreamObserver<ConditionDeleteResp> responseObserver) {
         log.info("** in log, DELETE request.toString: {}", request.toString());
 

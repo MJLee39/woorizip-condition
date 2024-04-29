@@ -31,21 +31,25 @@ public class ConditionService {
         this.conditionRepositoryCustom = conditionRepositoryCustom;
     }
 
-    /*
-     * Condition isRegistered
-     * !list.isEmpty(): false -> 등록된 조건 없음 -> 등록 가능
-     * !list.isEmpty(): true  -> 등록된 조건 있음 -> 등록 불가
+    /**
+     * isRegistered: 특정 의뢰인이 등록한 조건이 있는지 확인
+     * @param accountId: 유저 ID
+     * condition.isPresent(): true -> 등록된 조건 있음 -> 등록 불가
+     * condition.isPresent(): false  -> 등록된 조건 없음 -> 등록 가능
+     * @return boolean
      */
     public Boolean isRegistered (String accountId) {
         log.info("[in service]: " + accountId);
 
-        Optional<ConditionDto> one = conditionRepositoryCustom.readMyConditions(accountId);
+        Optional<ConditionDto> condition = conditionRepositoryCustom.readMyConditions(accountId);
 
-        return one.isPresent();
+        return condition.isPresent();
     }
 
-    /*
-     * Condition save
+    /**
+     * save: 설정한 조건 등록
+     * @param conditionReqDto: condition(id, accountId, location, buildType, fee, moveInDate, hashtag)
+     * @return ConditionRespDto: condition(id, accountId, location, buildType, fee, moveInDate, hashtag)
      */
     public ConditionRespDto save (ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
@@ -55,8 +59,10 @@ public class ConditionService {
         return new ConditionRespDto(condition);
     }
 
-    /*
-     * Condition read
+    /**
+     * read: 자신의 조건만 조회(의뢰인 당 1개의 조건만 등록 가능)
+     * @param accountId: 유저 ID
+     * @return conditionDto: condition(id, accountId, location, buildType, fee, moveInDate, hashtag)
      */
     public ConditionDto read(String accountId) {
         log.info("[in Service]: " + accountId.toString());
@@ -67,8 +73,9 @@ public class ConditionService {
         return conditionDto;
     }
 
-    /*
-     * Condition readAll
+    /**
+     * readAll: 공인중개사가 보는 전체 조회
+     * @return List<ConditionRespDto>: list<condition(id, accountId, location, buildType, fee, moveInDate, hashtag)>
      */
     public List<ConditionRespDto> readAll() {
         log.info("[in Service]: {}");
@@ -83,8 +90,12 @@ public class ConditionService {
         ).toList();
     }
 
-    /*
-     * Condition readByWhere
+    /**
+     * readByWhere: 조건 필터링을 통해 받은 객체를 builder로 재구성 후, 해당 builder를 기준으로 조회
+     * @param conditionReqDto: condition(accountId, location, buildType, fee, moveInDate, hashtag)
+     *                       location, buildingType, moveInDate, hashtag == "" 가능
+     *                       fee == 0 가능
+     * @return List<ConditionRespDto>: list<condition(id, accountId, location, buildType, fee, moveInDate, hashtag)>
      */
     public List<ConditionRespDto> readByWhere(ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
@@ -107,8 +118,10 @@ public class ConditionService {
         ).toList();
     }
 
-    /*
-     * Condition update
+    /**
+     * update: 조건 컬럼을 받아서 더티 체킹 후 해당 로우 업데이트
+     * @param conditionReqDto: condition(accountId, location, buildType, fee, moveInDate, hashtag)
+     * @return ConditionRespDto: condition(accountId, location, buildType, fee, moveInDate, hashtag)
      */
     @Transactional
     public ConditionRespDto update(ConditionReqDto conditionReqDto) {
@@ -144,9 +157,13 @@ public class ConditionService {
         return new ConditionRespDto(target);
     }
 
-    /*
-     * Condition delete
+
+    /**
+     * delete: id로 특정 조건 삭제
+     * @param id: 등롣된 조건 UUID
+     * @return String
      */
+    @Transactional
     public String delete(String id) {
         log.info("[in Service]: " + id);
 

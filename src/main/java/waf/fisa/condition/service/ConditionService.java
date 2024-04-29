@@ -15,6 +15,7 @@ import waf.fisa.condition.repository.ConditionRepository;
 import waf.fisa.condition.repository.ConditionRepositoryCustom;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -38,9 +39,9 @@ public class ConditionService {
     public Boolean isRegistered (String accountId) {
         log.info("[in service]: " + accountId);
 
-        List<ConditionRespDto> list = readAll(accountId);
+        Optional<ConditionDto> one = conditionRepositoryCustom.readMyConditions(accountId);
 
-        return !list.isEmpty();
+        return one.isPresent();
     }
 
     /*
@@ -57,31 +58,29 @@ public class ConditionService {
     /*
      * Condition read
      */
-    public ConditionRespDto read(String id) {
-        log.info("[in Service]: " + id.toString());
+    public ConditionDto read(String accountId) {
+        log.info("[in Service]: " + accountId.toString());
 
-        Condition condition = conditionRepository.findById(id)
+        ConditionDto conditionDto = conditionRepositoryCustom.readMyConditions(accountId)
                 .orElseThrow(EntityExistsException::new);
 
-        return new ConditionRespDto(condition);
+        return conditionDto;
     }
 
     /*
      * Condition readAll
      */
-    public List<ConditionRespDto> readAll(String accountId) {
-        log.info("[in Service]: {}", accountId);
+    public List<ConditionRespDto> readAll() {
+        log.info("[in Service]: {}");
 
-        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
-                .accountId(accountId)
-                .build();
+        List<Condition> list = conditionRepository.findAll();
 
-        Condition condition = conditionReqDto.toEntity();
-        log.info("condition: {}", condition.getAccountId());
+        return convertToRespDtoFromCondition(list);
+    }
 
-        List<ConditionDto> list = conditionRepositoryCustom.readMyConditions(condition);
-
-        return convertToRespDtoFromConditionDto(list);
+    private static List<ConditionRespDto> convertToRespDtoFromCondition(List<Condition> list) {
+        return list.stream().map(condition -> condition.toConditionRespDto(condition)
+        ).toList();
     }
 
     /*

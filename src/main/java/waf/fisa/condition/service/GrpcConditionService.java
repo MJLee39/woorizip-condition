@@ -1,5 +1,6 @@
 package waf.fisa.condition.service;
 
+import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import waf.fisa.grpc.condition.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @GrpcService
@@ -34,17 +37,13 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     public void isRegistered(ConditionAccountIdReq request, StreamObserver<ConditionIsRegisteredResp> responseObserver) {
         log.info("** in log: isRegistered request: {}", request.toString());
 
-        boolean isRegistered;
+        boolean isRegistered = true;
 
-        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
-                .accountId(request.getAccountId())
-                .build();
+        Optional<ConditionDto> one = conditionRepositoryCustom.readMyConditions(request.getAccountId());
 
-        Condition condition = conditionReqDto.toEntity();
-
-        List<ConditionDto> list = conditionRepositoryCustom.readMyConditions(condition);
-
-        isRegistered = !list.isEmpty();
+        if (one.isEmpty()) {
+            isRegistered = false;
+        }
 
         responseObserver.onNext(ConditionIsRegisteredResp.newBuilder()
                 .setIsRegistered(isRegistered)
@@ -54,10 +53,10 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     }
 
     /*
-        조건 등록
-        Request: ConditionReq
-        Response: ConditionResp
-         */
+    조건 등록
+    Request: ConditionReq
+    Response: ConditionResp
+     */
     @Override
     public void saveCondition(ConditionReq request, StreamObserver<ConditionResp> responseObserver) {
         log.info("** in log, SAVE request.toString: {}", request.toString());
@@ -81,24 +80,24 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     }
 
     /*
-    단일 조건 조회
-    Request: ConditionIdReq
+    내 조건 조회
+    Request: ConditionAccountIdReq
     Response: ConditionResp
      */
     @Override
-    public void readCondition(ConditionIdReq request, StreamObserver<ConditionResp> responseObserver) {
+    public void readMyCondition(ConditionAccountIdReq request, StreamObserver<ConditionResp> responseObserver) {
         log.info("** in log, READ request.toString: {}", request.toString());
 
-        Condition condition = conditionRepository.findById(request.getId()).orElseThrow(EntityNotFoundException::new);
+        Optional<ConditionDto> one = conditionRepositoryCustom.readMyConditions(request.getAccountId());
 
         responseObserver.onNext(ConditionResp.newBuilder()
-                .setId(condition.getId())
-                .setAccountId(condition.getAccountId())
-                .setLocation(condition.getLocation())
-                .setBuildingType(condition.getBuildingType())
-                .setFee(condition.getFee())
-                .setMoveInDate(condition.getMoveInDate().toString())
-                .setHashtag(condition.getHashtag())
+                .setId(one.get().getId())
+                .setAccountId(one.get().getAccountId())
+                .setLocation(one.get().getLocation())
+                .setBuildingType(one.get().getBuildingType())
+                .setFee(one.get().getFee())
+                .setMoveInDate(one.get().getMoveInDate().toString())
+                .setHashtag(one.get().getHashtag())
                 .build()
         );
 
@@ -107,26 +106,20 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
 
     /*
     전체 조건 조회
-    Request: ConditionAccountIdReq
+    Request: Empty
     Response: ConditionRespList
      */
     @Override
-    public void readAllCondition(ConditionAccountIdReq request, StreamObserver<ConditionRespList> responseObserver) {
-        log.info("** in log, READ ALL request.getAccount: {}", request.getAccountId());
+    public void readAllCondition(Empty request, StreamObserver<ConditionRespList> responseObserver) {
+        log.info("** in log, READ ALL request.getAccount: {}");
 
-        ConditionReqDto conditionReqDto = ConditionReqDto.builder()
-                .accountId(request.getAccountId())
-                .build();
-
-        Condition condition = conditionReqDto.toEntity();
-
-        List<ConditionDto> list = conditionRepositoryCustom.readMyConditions(condition);
+        List<Condition> list = conditionRepository.findAll();
 
         log.info("** {}, {}, {}, {}, {}, {}, {}", list.get(0).getId(), list.get(0).getAccountId(), list.get(0).getLocation(),
                 list.get(0).getBuildingType(), list.get(0).getFee(), list.get(0).getMoveInDate(), list.get(0).getHashtag());
 
         if (list.size() != 0) {
-            for (ConditionDto ele : list) {
+            for (Condition ele : list) {
                 log.info(ele.toString());
             }
         } else {
@@ -134,11 +127,24 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         }
 
         responseObserver.onNext(ConditionRespList.newBuilder()
-                .addAllConditions(convertToEntityForReadByWhere(list))
+                .addAllConditions(convertToRespDtoFromCondition(list))
                 .build()
         );
 
         responseObserver.onCompleted();
+    }
+
+    private static List<waf.fisa.grpc.condition.Condition> convertToRespDtoFromCondition(List<Condition> list) {
+        return list.stream().map(condition -> waf.fisa.grpc.condition.Condition.newBuilder()
+                .setId(condition.getId())
+                .setAccountId(condition.getAccountId())
+                .setLocation(condition.getLocation())
+                .setBuildingType(condition.getBuildingType())
+                .setFee(condition.getFee())
+                .setMoveInDate(condition.getMoveInDate().toString())
+                .setHashtag(condition.getHashtag())
+                .build()
+        ).toList();
     }
 
     /*

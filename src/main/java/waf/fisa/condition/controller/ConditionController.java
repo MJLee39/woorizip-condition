@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import waf.fisa.condition.dto.ConditionDto;
 import waf.fisa.condition.dto.ConditionReqDto;
 import waf.fisa.condition.dto.ConditionRespDto;
 import waf.fisa.condition.service.ConditionService;
@@ -57,24 +58,22 @@ public class ConditionController {
     read
      */
     @CrossOrigin("*")
-    @GetMapping("/condition/read/{id}")
-    public ResponseEntity<ConditionRespDto> read(@PathVariable String id) {
-        log.info("[in controller]: " + id);
+    @GetMapping("/condition/read/{accountId}")
+    public ResponseEntity<ConditionDto> read(@PathVariable String accountId) {
+        log.info("[in controller]: " + accountId);
 
-        ConditionRespDto filterRespDto = conditionService.read(id);
+        ConditionDto conditionDto = conditionService.read(accountId);
 
-        return ResponseEntity.ok(filterRespDto);
+        return ResponseEntity.ok(conditionDto);
     }
 
     /*
     readAll
      */
     @CrossOrigin("*")
-    @GetMapping("/condition/readAll/{accountId}")
-    public ResponseEntity<List<ConditionRespDto>> readAll(@PathVariable String accountId) {
-        log.info("[in controller]: " + accountId);
-
-        List<ConditionRespDto> conditionRespDto = conditionService.readAll(accountId);
+    @GetMapping("/condition/readAll")
+    public ResponseEntity<List<ConditionRespDto>> readAll() {
+        List<ConditionRespDto> conditionRespDto = conditionService.readAll();
 
         return ResponseEntity.ok(conditionRespDto);
     }

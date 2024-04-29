@@ -3,6 +3,7 @@ package waf.fisa.condition.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import waf.fisa.condition.dto.ConditionRespDto;
 import waf.fisa.grpc.condition.ConditionReq;
 
 import java.time.LocalDate;
@@ -78,6 +79,19 @@ public class Condition {
                 .moveInDate(LocalDate.parse(input.getMoveInDate(), DateTimeFormatter.ISO_DATE))
                 .hashtag(input.getHashtag())
                 .build();
+    }
+
+    public ConditionRespDto toConditionRespDto(Condition condition) {
+        this.id = condition.getId();
+        this.accountId = condition.getAccountId();;
+        this.location = condition.getLocation();
+        this.buildingType = condition.getBuildingType();
+        this.fee = condition.getFee();
+        this.moveInDate = condition.getMoveInDate();
+        this.hashtag = condition.getHashtag();
+
+        return new ConditionRespDto(condition.getId(), condition.getAccountId(), condition.getLocation()
+                , condition.getBuildingType(), condition.getFee(), condition.getMoveInDate(), condition.getHashtag());
     }
 
     public void updateLocation(String location) {

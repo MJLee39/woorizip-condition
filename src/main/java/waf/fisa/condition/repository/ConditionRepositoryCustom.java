@@ -10,6 +10,7 @@ import waf.fisa.condition.dto.QConditionDto;
 import waf.fisa.condition.entity.Condition;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.util.StringUtils.hasText;
 import static waf.fisa.condition.entity.QCondition.condition;
@@ -21,16 +22,16 @@ public class ConditionRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<ConditionDto> readMyConditions(Condition input) {
+    public Optional<ConditionDto> readMyConditions(String accountId) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        log.info("** in ConditionRepositoryCustom, input: accountId: {}", input.getAccountId());
+        log.info("** in ConditionRepositoryCustom, input: accountId: {}", accountId);
 
-        builder.and(condition.accountId.eq(input.getAccountId()));
+        builder.and(condition.accountId.eq(accountId));
 
         log.info("** in ConditionRepositoryCustom, builder: {}", builder.toString());
 
-        return queryFactory
+        return Optional.ofNullable(queryFactory
                 .select(new QConditionDto(
                         condition.id,
                         condition.accountId,
@@ -42,7 +43,7 @@ public class ConditionRepositoryCustom {
                 ))
                 .from(condition)
                 .where(builder)
-                .fetch();
+                .fetchOne());
     }
 
     public List<ConditionDto> readByBuilder(Condition input) {

@@ -19,17 +19,17 @@ message Condition {
 }
 
 service ConditionService {
-  rpc IsRegistered(ConditionAccountIdReq) returns(ConditionIsRegisteredResp);
+  rpc IsRegistered(ConditionAccountIdReq) returns(ConditionIsRegisteredResp); // 등록된 조건 확인 (의뢰인)
 
-  rpc SaveCondition(ConditionReq) returns (ConditionResp); // Condition 등록
+  rpc SaveCondition(ConditionReq) returns (ConditionResp); // Condition 등록 (의뢰인)
 
-  rpc ReadCondition(ConditionIdReq) returns (ConditionResp); // Condition 단일 조회
-  rpc ReadAllCondition(ConditionAccountIdReq) returns (ConditionRespList); // Condition 전체 조회
-  rpc ReadByWhereCondition(ConditionReq) returns (ConditionRespList); // Condition 조건부 조회
+  rpc ReadMyCondition(ConditionAccountIdReq) returns (ConditionResp); // My Condition 조회 (의뢰인)
+  rpc ReadAllCondition(google.protobuf.Empty) returns (ConditionRespList); // Condition 전체 조회 (공인중개사)
+  rpc ReadByWhereCondition(ConditionReq) returns (ConditionRespList); // Condition 조건부 조회 (공인중개사)
 
-  rpc updateCondition(ConditionReqWithId) returns (ConditionResp); // Condition 수정
+  rpc updateCondition(ConditionReqWithId) returns (ConditionResp); // Condition 수정 (의뢰인)
 
-  rpc DeleteCondition(ConditionIdReq) returns (ConditionDeleteResp); // Condition 삭제
+  rpc DeleteCondition(ConditionIdReq) returns (ConditionDeleteResp); // Condition 삭제 (의뢰인)
 }
 
 /*
@@ -58,14 +58,14 @@ message ConditionReqWithId {
 }
 
 /*
- * req: read, delete
+ * req: readMy, delete
  */
 message ConditionIdReq {
   string id = 1;
 }
 
 /*
- * req: IsRegistered, readAll
+ * req: IsRegistered
  */
 message ConditionAccountIdReq {
   string accountId = 1;
@@ -79,7 +79,7 @@ message ConditionIsRegisteredResp {
 }
 
 /*
- * resp: save, read, update
+ * resp: save, readMy, update
  */
 message ConditionResp {
   string id = 1;

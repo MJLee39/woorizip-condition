@@ -14,6 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 public class ConditionController {
 
     private waf.fisa.condition.service.ConditionService conditionService;
@@ -31,20 +32,20 @@ public class ConditionController {
         log.info("[in controller]: " + accountId);
 
         Boolean isRegistered = conditionService.isRegistered(accountId);
+        log.info("* isRegistered: {}", isRegistered);
 
         if (isRegistered) {
             // isRegistered: true  -> 등록된 조건 있음 -> 등록 불가
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok(isRegistered);
         } else {
             // isRegistered: false -> 등록된 조건 없음 -> 등록 가능
-            return ResponseEntity.ok(false);
+            return ResponseEntity.ok(isRegistered);
         }
     }
 
     /*
     save
      */
-    @CrossOrigin("*")
     @PostMapping("/condition/save")
     public ResponseEntity<ConditionRespDto> save(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + ConditionReqDto.builder().toString());
@@ -57,7 +58,6 @@ public class ConditionController {
     /*
     read
      */
-    @CrossOrigin("*")
     @GetMapping("/condition/read/{accountId}")
     public ResponseEntity<ConditionDto> read(@PathVariable String accountId) {
         log.info("[in controller]: " + accountId);
@@ -70,7 +70,6 @@ public class ConditionController {
     /*
     readAll
      */
-    @CrossOrigin("*")
     @GetMapping("/condition/readAll")
     public ResponseEntity<List<ConditionRespDto>> readAll() {
         List<ConditionRespDto> conditionRespDto = conditionService.readAll();
@@ -81,7 +80,6 @@ public class ConditionController {
     /*
     readByWhere
      */
-    @CrossOrigin("*")
     @PostMapping("/condition/readByWhere")
     public ResponseEntity<List<ConditionRespDto>> readByWhere(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + conditionReqDto.toString());
@@ -94,7 +92,6 @@ public class ConditionController {
     /*
     update
      */
-    @CrossOrigin("*")
     @PostMapping("/condition/update")
     public ResponseEntity<ConditionRespDto> update(@RequestBody ConditionReqDto conditionReqDto) {
         log.info("[in controller]: " + conditionReqDto.toString());
@@ -107,7 +104,6 @@ public class ConditionController {
     /*
     delete
      */
-    @CrossOrigin("*")
     @DeleteMapping("/condition/delete/{id}")
     public String delete(@PathVariable String id) {
 //        log.info("[in controller]: " + id);

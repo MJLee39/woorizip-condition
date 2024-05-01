@@ -105,3 +105,8 @@ protobuf {
 		}
 	}
 }
+
+bootJar {
+	archiveFileName = "app.jar"
+	destinationDirectory = file("./")
+}

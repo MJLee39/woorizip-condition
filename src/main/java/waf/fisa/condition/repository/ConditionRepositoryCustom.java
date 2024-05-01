@@ -49,9 +49,9 @@ public class ConditionRepositoryCustom {
     public List<ConditionDto> readByBuilder(Condition input) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        log.info("** in ConditionRepositoryCustom, input: \n id: {}, \n accountId: {}, \n location: {}, \n buildingType: {}, " +
+        log.info("** in ConditionRepositoryCustom, input: \n location: {}, \n buildingType: {}, " +
                         "\n fee: {}, \n moveInDate: {}, \n hashTag: {}",
-                input.getId(), input.getAccountId(), input.getLocation(), input.getBuildingType()
+                input.getLocation(), input.getBuildingType()
         , input.getFee(), input.getMoveInDate(), input.getHashtag());
 
         if (hasText(input.getLocation())) {

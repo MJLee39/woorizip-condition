@@ -153,15 +153,13 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
      * @param responseObserver: list - id, accountId, location, buildingType, fee, moveInDate, hashtag
      */
     @Override
-    public void readByWhereCondition(ConditionReq request, StreamObserver<ConditionRespList> responseObserver) {
-
+    public void readByWhereCondition(ConditionReadByWhereReq request, StreamObserver<ConditionRespList> responseObserver) {
         log.info("** in log, READ BY WHERE request.toString: {}", request.toString());
 
 //        LocalDate time  = !request.getMoveInDate().isBlank() ? LocalDate.parse(request.getMoveInDate(), DateTimeFormatter.ISO_DATE): null;
         LocalDate time = !request.getMoveInDate().isBlank() ? LocalDate.parse(request.getMoveInDate(), DateTimeFormatter.ISO_DATE) : null;
 
         ConditionReqDto conditionReqDto = ConditionReqDto.builder()
-                .accountId(request.getAccountId())
                 .location(request.getLocation())
                 .buildingType(request.getBuildingType())
                 .fee(request.getFee())

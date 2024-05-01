@@ -92,7 +92,7 @@ public class ConditionService {
 
     /**
      * readByWhere: 조건 필터링을 통해 받은 객체를 builder로 재구성 후, 해당 builder를 기준으로 조회
-     * @param conditionReqDto: condition(accountId, location, buildType, fee, moveInDate, hashtag)
+     * @param conditionReqDto: condition(location, buildType, fee, moveInDate, hashtag)
      *                       location, buildingType, moveInDate, hashtag == "" 가능
      *                       fee == 0 가능
      * @return List<ConditionRespDto>: list<condition(id, accountId, location, buildType, fee, moveInDate, hashtag)>
@@ -100,7 +100,7 @@ public class ConditionService {
     public List<ConditionRespDto> readByWhere(ConditionReqDto conditionReqDto) {
         log.info("[in Service]: " + conditionReqDto.toString());
 
-        Condition condition = conditionReqDto.toEntity();
+        Condition condition = conditionReqDto.toEntityReadByWhere();
 
         List<ConditionDto> list = conditionRepositoryCustom.readByBuilder(condition);
 

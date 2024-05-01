@@ -49,4 +49,13 @@ public class ConditionReqDto {
                 .build();
     }
 
+    public Condition toEntityReadByWhere () {
+        return Condition.builder()
+                .location(location)
+                .buildingType(buildingType)
+                .fee(fee)
+                .moveInDate(moveInDate)
+                .hashtag(hashtag)
+                .build();
+    }
 }

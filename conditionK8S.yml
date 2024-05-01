@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: condition
-          image: painterrr/woorizip:0.0.1
+          image: painterrr/woorizip-condition:0.0.1
           ports:
             - containerPort: 9093
 ---

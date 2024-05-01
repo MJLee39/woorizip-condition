@@ -106,7 +106,7 @@ public class ConditionController {
      */
     @DeleteMapping("/condition/delete/{id}")
     public String delete(@PathVariable String id) {
-//        log.info("[in controller]: " + id);
+        log.info("[in controller]: " + id);
 
         String result = conditionService.delete(id);
         log.info("result: {}", result);

@@ -90,7 +90,7 @@ message ConditionIsRegisteredResp {
 }
 
 /*
- * resp: save, readMy, update
+ * resp: save, readMyCondition, update
  */
 message ConditionResp {
   string id = 1;

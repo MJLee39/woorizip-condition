@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: condition
-          image: 211125685751.dkr.ecr.ap-northeast-2.amazonaws.com/woorizip-condition:20240502011835
+          image: 211125685751.dkr.ecr.ap-northeast-2.amazonaws.com/woorizip-condition:20240502012219
           ports:
             - containerPort: 9093
 ---

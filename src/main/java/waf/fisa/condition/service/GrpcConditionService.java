@@ -156,7 +156,6 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
     public void readByWhereCondition(ConditionReadByWhereReq request, StreamObserver<ConditionRespList> responseObserver) {
         log.info("** in log, READ BY WHERE request.toString: {}", request.toString());
 
-//        LocalDate time  = !request.getMoveInDate().isBlank() ? LocalDate.parse(request.getMoveInDate(), DateTimeFormatter.ISO_DATE): null;
         LocalDate time = !request.getMoveInDate().isBlank() ? LocalDate.parse(request.getMoveInDate(), DateTimeFormatter.ISO_DATE) : null;
 
         ConditionReqDto conditionReqDto = ConditionReqDto.builder()

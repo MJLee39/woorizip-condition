@@ -284,10 +284,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-### application.yml & properties###
-/src/main/resources/*.yml
-/src/main/resources/*.properties
-
 ### gRPC
 /src/generated/main/grpc
 /src/generated/main/java

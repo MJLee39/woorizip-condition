@@ -24,7 +24,7 @@ public class ConditionController {
         this.conditionService = conditionService;
     }
 
-    /*
+    /**
     is registered
      */
     @GetMapping("/condition/isregistered/{accountId}")
@@ -43,7 +43,7 @@ public class ConditionController {
         }
     }
 
-    /*
+    /**
     save
      */
     @PostMapping("/condition/save")
@@ -55,7 +55,7 @@ public class ConditionController {
         return ResponseEntity.ok(conditionRespDto);
     }
 
-    /*
+    /**
     read
      */
     @GetMapping("/condition/read/{accountId}")
@@ -67,7 +67,7 @@ public class ConditionController {
         return ResponseEntity.ok(conditionDto);
     }
 
-    /*
+    /**
     readAll
      */
     @GetMapping("/condition/readAll")
@@ -77,7 +77,7 @@ public class ConditionController {
         return ResponseEntity.ok(conditionRespDto);
     }
 
-    /*
+    /**
     readByWhere
      */
     @PostMapping("/condition/readByWhere")
@@ -89,7 +89,7 @@ public class ConditionController {
          return ResponseEntity.ok(conditionRespDtos);
     }
 
-    /*
+    /**
     update
      */
     @PostMapping("/condition/update")
@@ -101,7 +101,7 @@ public class ConditionController {
         return ResponseEntity.ok(filterRespDto);
     }
 
-    /*
+    /**
     delete
      */
     @DeleteMapping("/condition/delete/{id}")

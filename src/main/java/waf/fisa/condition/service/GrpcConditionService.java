@@ -171,8 +171,9 @@ public class GrpcConditionService extends ConditionServiceGrpc.ConditionServiceI
         List<ConditionDto> list = conditionRepositoryCustom.readByBuilder(condition);
 
         if (list.size() != 0) {
+            log.info("list ele");
             for (ConditionDto ele : list) {
-                log.info(ele.toString());
+                log.info("{}, {}, {}, {}, {}", ele.getLocation(), ele.getBuildingType(), ele.getFee(), ele.getMoveInDate(), ele.getHashtag());
             }
         } else {
             log.info("** list is empty.");
